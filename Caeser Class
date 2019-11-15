@@ -1,0 +1,116 @@
+import java.util.Scanner;
+public class Ceasar {
+	/*
+	 * Encryption – A cipher is a basic encryption technique where you replace a letter 
+with one further down in the alphabet so for example maybe all a’s are replaced 
+by c’s and all b’s are replaced by d’s and so on.  Write a program that will encrypt 
+and decrypt a sentence using a cipher of 5 (so each letter is replaced by the letter 5 
+down from it).
+	 */
+	Scanner reader = new Scanner(System.in);
+	public String sOriginal, sED, sE;
+	public int iKey = 0;
+	public String [] [] key = {{"a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"}, {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26"}, {"0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0"}, {"0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0"}};
+	
+	public void Setup() {
+		System.out.println("Enter your sentence");
+		sOriginal = reader.nextLine();
+		if (sOriginal.isEmpty()) {
+			sOriginal = reader.nextLine();
+		}
+		System.out.println("Encrypt or Decrypt? (e/d)");
+		sED = reader.nextLine();
+		if (sED.isEmpty()) {
+			sED = reader.nextLine();
+		}
+		System.out.println("Enter the key. Must be between 1-26");
+		iKey = reader.nextInt();
+		while ((iKey >= 26) || (iKey < 1)) {
+			System.out.println("Please enter a valid option");
+			iKey = reader.nextInt();
+		}
+		if (sED.equals("e")) {
+			Encrypt1();
+			Encrypt2();
+			Encrypt3();
+		}
+		else if (sED.equals("d")) {
+			Decrypt1();
+			Decrypt2();
+			Decrypt3();
+		}
+	}
+
+	public void Encrypt1() {
+		int x = 0;
+		String sChange;
+		for (x = 0; x < 26; x++) {
+			sChange = key [1][x];
+			int iChange = Integer.parseInt(sChange);
+			int iNew = (iChange) + iKey;
+			if (iNew > 26) {
+				iNew = iNew - 26;
+			}
+			String sNew = Integer.toString(iNew);
+			key [2][x] = sNew;
+			
+		}
+	}
+	public void Encrypt2() {
+		int x = 0;
+		String sOrigL, sNewN;
+		int iNewN;
+		for (x = 0; x < 26; x++) {
+			//find what each letter is set as, set new
+			sNewN = key [2][x];
+			iNewN = Integer.parseInt(sNewN);
+			sOrigL = key [0][iNewN - 1];
+			key [3][x] = sOrigL;
+		}
+	}
+		public void Encrypt3() {
+			int x = 0, z = 0;
+			int iLength = sOriginal.length();
+			String sOrig, sNew;
+			sE = "";
+			for (z = 0; z < iLength; z++) {
+				char c = sOriginal.charAt(z);
+				String s = Character.toString(c);
+				for (x = 0; x < 26; x++) {
+					sOrig = key [0][x];
+					sNew = key [3][x];
+					if (s.equals(sOrig)) {
+						s = sNew;
+						sE = sE + s;
+						break;
+					}
+					else if (s.equals(" ")) {
+						sE = sE + s;
+						break;
+					}
+						
+					}
+					
+
+				}
+			System.out.println(sE);
+			
+		
+	}
+		
+	public void Decrypt1() {
+		int x = 0;
+		String sChange;
+		for (x = 0; x < 26; x++) {
+			sChange = key [1][x];
+			int iChange = Integer.parseInt(sChange);
+			int iNew = iChange - iKey;
+			if (iNew < 0) {
+				iNew = iNew + 26;
+			}
+			String sNew = Integer.toString(iNew);
+			key [2][x] = sNew;
+			
+		}
+	}
+	
